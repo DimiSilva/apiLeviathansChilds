@@ -1,12 +1,13 @@
 using System;
 using apiLeviathansChilds.domain.arguments.user;
+using apiLeviathansChilds.domain.entities;
 
 namespace apiLeviathansChilds.domain.interfaces.repositories
 {
     public interface IRepositoryUser
     {
-        AuthenticationRes Authentication(AuthenticationReq request);
+        AuthenticationRes Authentication(string nick, string emailAdress, string password);
 
-        Guid CreateUser(CreateUserReq request);
+        Guid CreateUser(User user);
     }
 }
