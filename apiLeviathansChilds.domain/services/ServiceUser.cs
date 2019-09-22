@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using apiLeviathansChilds.domain.arguments;
 using apiLeviathansChilds.domain.arguments.user;
 using apiLeviathansChilds.domain.entities;
 using apiLeviathansChilds.domain.interfaces.repositories;
@@ -12,43 +15,108 @@ namespace apiLeviathansChilds.domain.services
     public class ServiceUser : Notifiable, IServiceUser
     {
         private readonly IRepositoryUser _repositoryUser;
+        public ServiceUser(IRepositoryUser repositoryUser)
+        {
+            _repositoryUser = repositoryUser;
+        }
 
-        // public ServiceUser(IRepositoryUser repositoryUser)
-        // {
-        //     _repositoryUser = repositoryUser;
-        // }
+
 
         public AuthenticationRes Authentication(AuthenticationReq request)
         {
             if (request == null)
-                throw new Exception(Messages.X0_IS_OBRIGATORY("Request"));
+            {
+                AddNotification("AuthenticationReq", Messages.X0_IS_OBRIGATORY("Request"));
+                return null;
+            }
+            User user = _repositoryUser.GetBy(x => x.nick == request.nick).FirstOrDefault();
+            if (user == null)
+            {
+                AddNotification("UserNotFound", Messages.X0_NOT_FOUND("User"));
+                return null;
+            }
 
-            var email = new Email(request.emailAdress);
-            var user = new User(request.nick, email, request.password);
+            user.Authenticate(request);
+            AddNotifications(user);
 
-            AddNotifications(user, email);
-
-            if (user.IsInvalid())
+            if (this.IsInvalid())
             {
                 return null;
             }
-            return new AuthenticationRes();
-            // var response = _repositoryUser.Authentication(user.nick, user.email.adress, user.password);
-            // return response;
 
+            return (AuthenticationRes)user;
         }
 
         public CreateUserRes CreateUser(CreateUserReq request)
         {
-            //testes apagar
-            User user = new User("teste", new Email(request.email), request.password);
+            if (request == null)
+                AddNotification("CreateUserReq", Messages.X0_IS_OBRIGATORY("Request"));
 
-            Guid id = _repositoryUser.CreateUser(user);
-            return new CreateUserRes()
+            var name = new RealName(request.firstName, request.lastName);
+            string nick = request.nick;
+            var email = new Email(request.email);
+            string password = request.password;
+            var user = new User(name, nick, email, password);
+
+            if (this.IsInvalid())
+                return null;
+
+            user = _repositoryUser.Insert(user);
+            return (CreateUserRes)user;
+        }
+
+        public UserRes GetUser(GetUserReq request)
+        {
+            if (request == null)
+                AddNotification("GetUserReq", Messages.X0_IS_OBRIGATORY("Request"));
+
+            return (UserRes)_repositoryUser.GetById(request.id);
+        }
+
+        public IEnumerable<UserRes> GetUsers()
+        {
+            return _repositoryUser.GetAll().Select(user => (UserRes)user).ToList();
+        }
+
+        public BaseRes RemoveUser(RemoveUserReq request)
+        {
+            if (request == null)
             {
-                id = id,
-                message = "User created"
-            };
+                AddNotification("RemoveUserReq", Messages.X0_IS_OBRIGATORY("Request"));
+                return null;
+            }
+            User user = _repositoryUser.GetById(request.id);
+            if (user == null)
+            {
+                AddNotification("UserNotFound", Messages.X0_NOT_FOUND("User"));
+                return null;
+            }
+
+            _repositoryUser.Remove(user);
+            return new BaseRes("User removed");
+        }
+
+        public UpdateUserRes UpdateUser(UpdateUserReq request)
+        {
+            if (request == null)
+                AddNotification("UpdateUserReq", Messages.X0_IS_OBRIGATORY("Request"));
+
+            User user = _repositoryUser.GetById(request.id);
+
+            if (user == null)
+            {
+                AddNotification("user", Messages.X0_NOT_FOUND("User"));
+                return null;
+            }
+
+            user.Update(request);
+            AddNotifications(user);
+            if (IsInvalid())
+            {
+                return null;
+            }
+            _repositoryUser.Update(user);
+            return (UpdateUserRes)user;
         }
     }
 }

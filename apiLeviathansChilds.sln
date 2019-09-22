@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "apiLeviathansChilds.domain"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "apiLeviathansChilds.tests", "apiLeviathansChilds.tests\apiLeviathansChilds.tests.csproj", "{0B7A055E-D5D8-46E7-AF94-C4ED7CE34E5E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "apiLeviathansChilds.infra", "apiLeviathansChilds.infra\apiLeviathansChilds.infra.csproj", "{65F77F63-3E77-426A-B7F7-B7B7A09EF145}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,5 +46,17 @@ Global
 		{0B7A055E-D5D8-46E7-AF94-C4ED7CE34E5E}.Release|x64.Build.0 = Release|Any CPU
 		{0B7A055E-D5D8-46E7-AF94-C4ED7CE34E5E}.Release|x86.ActiveCfg = Release|Any CPU
 		{0B7A055E-D5D8-46E7-AF94-C4ED7CE34E5E}.Release|x86.Build.0 = Release|Any CPU
+		{65F77F63-3E77-426A-B7F7-B7B7A09EF145}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65F77F63-3E77-426A-B7F7-B7B7A09EF145}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65F77F63-3E77-426A-B7F7-B7B7A09EF145}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{65F77F63-3E77-426A-B7F7-B7B7A09EF145}.Debug|x64.Build.0 = Debug|Any CPU
+		{65F77F63-3E77-426A-B7F7-B7B7A09EF145}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{65F77F63-3E77-426A-B7F7-B7B7A09EF145}.Debug|x86.Build.0 = Debug|Any CPU
+		{65F77F63-3E77-426A-B7F7-B7B7A09EF145}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65F77F63-3E77-426A-B7F7-B7B7A09EF145}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65F77F63-3E77-426A-B7F7-B7B7A09EF145}.Release|x64.ActiveCfg = Release|Any CPU
+		{65F77F63-3E77-426A-B7F7-B7B7A09EF145}.Release|x64.Build.0 = Release|Any CPU
+		{65F77F63-3E77-426A-B7F7-B7B7A09EF145}.Release|x86.ActiveCfg = Release|Any CPU
+		{65F77F63-3E77-426A-B7F7-B7B7A09EF145}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

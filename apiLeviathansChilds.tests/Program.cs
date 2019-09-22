@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Linq;
 using apiLeviathansChilds.domain.arguments.user;
+using apiLeviathansChilds.domain.entities;
 using apiLeviathansChilds.domain.services;
+using apiLeviathansChilds.domain.valueObjects;
+using apiLeviathansChilds.infra.persistence;
 
 namespace apiLeviathansChilds.tests
 {
@@ -9,21 +12,30 @@ namespace apiLeviathansChilds.tests
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Tests starting...");
 
-            var service = new ServiceUser();
-            Console.WriteLine("Service instance created");
+            using (var context = new Context())
+            {
+                context.Users.Add(new User(new RealName("teste", "teste"), "testando1", new Email("teste1@teste.com"), "123456"));
+                context.SaveChanges();
+                Console.WriteLine("inserido");
+            }
+            // Console.WriteLine("Tests starting...");
 
-            AuthenticationReq request = new AuthenticationReq();
-            Console.WriteLine("Request created");
+            // var service = new ServiceUser();
+            // Console.WriteLine("Service instance created");
 
-            request.emailAdress = "teste@teste.com";
-            request.password = "123456789";
-            request.nick = "teste";
+            // AuthenticationReq request = new AuthenticationReq();
+            // Console.WriteLine("Request created");
 
-            var response = service.Authentication(request);
+            // request.firstName = "teste";
+            // request.lastName = "testando";
+            // request.emailAdress = "teste@teste.com";
+            // request.password = "123456789";
+            // request.nick = "teste";
 
-            service.Notifications.ToList().ForEach(x => Console.WriteLine(x.Message));
+            // var response = service.Authentication(request);
+
+            // service.Notifications.ToList().ForEach(x => Console.WriteLine(x.Message));
         }
     }
 }
