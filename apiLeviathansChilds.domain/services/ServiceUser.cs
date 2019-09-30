@@ -20,8 +20,6 @@ namespace apiLeviathansChilds.domain.services
             _repositoryUser = repositoryUser;
         }
 
-
-
         public AuthenticationRes Authentication(AuthenticationReq request)
         {
             if (request == null)
@@ -29,7 +27,7 @@ namespace apiLeviathansChilds.domain.services
                 AddNotification("AuthenticationReq", Messages.X0_IS_OBRIGATORY("Request"));
                 return null;
             }
-            User user = _repositoryUser.GetBy(x => x.nick == request.nick).FirstOrDefault();
+            User user = _repositoryUser.GetByNick(request.nick);
             if (user == null)
             {
                 AddNotification("UserNotFound", Messages.X0_NOT_FOUND("User"));
@@ -47,25 +45,27 @@ namespace apiLeviathansChilds.domain.services
             return (AuthenticationRes)user;
         }
 
-        public CreateUserRes CreateUser(CreateUserReq request)
+        public CreateUserRes Insert(CreateUserReq request)
         {
             if (request == null)
                 AddNotification("CreateUserReq", Messages.X0_IS_OBRIGATORY("Request"));
 
             var name = new RealName(request.firstName, request.lastName);
             string nick = request.nick;
-            var email = new Email(request.email);
+            var email = new Email(request.emailAdress);
             string password = request.password;
             var user = new User(name, nick, email, password);
+
+            AddNotifications(user);
 
             if (this.IsInvalid())
                 return null;
 
-            user = _repositoryUser.Insert(user);
-            return (CreateUserRes)user;
+            Guid userId = _repositoryUser.Insert(user);
+            return (CreateUserRes)userId;
         }
 
-        public UserRes GetUser(GetUserReq request)
+        public UserRes GetById(GetUserReq request)
         {
             if (request == null)
                 AddNotification("GetUserReq", Messages.X0_IS_OBRIGATORY("Request"));
@@ -73,12 +73,12 @@ namespace apiLeviathansChilds.domain.services
             return (UserRes)_repositoryUser.GetById(request.id);
         }
 
-        public IEnumerable<UserRes> GetUsers()
+        public IEnumerable<UserRes> GetAll()
         {
-            return _repositoryUser.GetAll().Select(user => (UserRes)user).ToList();
+            return _repositoryUser.GetAll().ToList().Select(user => (UserRes)user);
         }
 
-        public BaseRes RemoveUser(RemoveUserReq request)
+        public RemoveUserRes Remove(RemoveUserReq request)
         {
             if (request == null)
             {
@@ -92,14 +92,17 @@ namespace apiLeviathansChilds.domain.services
                 return null;
             }
 
-            _repositoryUser.Remove(user);
-            return new BaseRes("User removed");
+            _repositoryUser.Remove(user.id);
+            return new RemoveUserRes();
         }
 
-        public UpdateUserRes UpdateUser(UpdateUserReq request)
+        public UpdateUserRes Update(UpdateUserReq request)
         {
             if (request == null)
+            {
                 AddNotification("UpdateUserReq", Messages.X0_IS_OBRIGATORY("Request"));
+                return null;
+            }
 
             User user = _repositoryUser.GetById(request.id);
 
@@ -116,7 +119,7 @@ namespace apiLeviathansChilds.domain.services
                 return null;
             }
             _repositoryUser.Update(user);
-            return (UpdateUserRes)user;
+            return new UpdateUserRes();
         }
     }
 }

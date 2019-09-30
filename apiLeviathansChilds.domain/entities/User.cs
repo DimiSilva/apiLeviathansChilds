@@ -2,7 +2,6 @@ using System;
 using apiLeviathansChilds.domain.extensions;
 using apiLeviathansChilds.domain.resources;
 using apiLeviathansChilds.domain.valueObjects;
-using apiLeviathansChilds.domain.enums;
 using prmToolkit.NotificationPattern;
 using apiLeviathansChilds.domain.arguments.user;
 
@@ -14,7 +13,7 @@ namespace apiLeviathansChilds.domain.entities
         public string nick { get; private set; }
         public Email email { get; private set; }
         public string password { get; private set; }
-        public EnumUserSituation status { get; private set; }
+        public string status { get; private set; }
 
         public User(RealName name, string nick, Email email, string password)
         {
@@ -22,30 +21,33 @@ namespace apiLeviathansChilds.domain.entities
             this.nick = nick;
             this.email = email;
             this.password = password;
-            this.status = EnumUserSituation.pending;
 
             new AddNotifications<User>(this)
                 .IfNullOrEmpty(x => x.nick, Messages.INFORM_A_VALID_X0("nick"))
                 .IfNullOrInvalidLength(x => x.password, 8, 20, Messages.INFORM_A_PASSWORD_WITH_X0_TO_X1_CHARACTERS("8", "20"));
-
-            if (IsValid())
-                this.password = password.ConvertToMD5();
 
             AddNotifications(email, name);
-        }
-
-        public User(string nick, string password)
-        {
-            this.nick = nick;
-            this.password = password;
-            this.status = EnumUserSituation.pending;
-
-            new AddNotifications<User>(this)
-                .IfNullOrEmpty(x => x.nick, Messages.INFORM_A_VALID_X0("nick"))
-                .IfNullOrInvalidLength(x => x.password, 8, 20, Messages.INFORM_A_PASSWORD_WITH_X0_TO_X1_CHARACTERS("8", "20"));
 
             if (IsValid())
                 this.password = password.ConvertToMD5();
+        }
+
+        public User(Guid id, string firstName, string lastName, string nick, string emailAdress, string password)
+        {
+            this.id = id;
+            this.name = new RealName(firstName, lastName);
+            this.nick = nick;
+            this.email = new Email(emailAdress);
+            this.password = password;
+        }
+
+        public User(Guid id, string firstName, string lastName, string nick, string emailAdress)
+        {
+            this.id = id;
+            this.name = new RealName(firstName, lastName);
+            this.nick = nick;
+            this.email = new Email(emailAdress);
+            this.status = status;
         }
 
         public void Authenticate(AuthenticationReq data)
@@ -83,3 +85,13 @@ namespace apiLeviathansChilds.domain.entities
         }
     }
 }
+
+// CREATE TABLE "users"
+//     (
+//     id uuid Primary Key
+//     , firstName VARCHAR(50) NOT NULL
+//     , lastName VARCHAR(50) NOT NULL
+//     , nick VARCHAR(20) UNIQUE NOT NULL
+//     , emailAdress VARCHAR(50) UNIQUE NOT NULL
+//     , password VARCHAR(255) NOT NULL
+//     );

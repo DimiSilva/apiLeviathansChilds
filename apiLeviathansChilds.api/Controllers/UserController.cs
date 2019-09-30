@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace apiLeviathansChilds.api.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
     public class UserController : ControllerBase
     {
         private readonly IServiceUser _serviceUser;
@@ -20,36 +19,43 @@ namespace apiLeviathansChilds.api.Controllers
         {
             _serviceUser = serviceUser;
         }
-        // GET api/values
+
         [HttpGet]
-        public ActionResult<IEnumerable<UserRes>> Get()
+        public IEnumerable<UserRes> Get()
         {
-            return _serviceUser.GetUsers().ToList();
+            return _serviceUser.GetAll();
         }
 
-        // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public UserRes Get(Guid id)
         {
-            return "value";
+            var req = new GetUserReq(id);
+            return _serviceUser.GetById(req);
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        public CreateUserRes Post([FromBody] CreateUserReq req)
         {
+            Console.WriteLine(req.firstName);
+            // var req = new CreateUserReq(firstName, lastName, nick, emailAdress, password);
+            return _serviceUser.Insert(req);
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public UpdateUserRes Put(Guid id, [FromBody] UpdateUserReq req)
         {
+            req.SetId(id);
+            return _serviceUser.Update(req);
         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public RemoveUserRes Delete(Guid id)
         {
+            var req = new RemoveUserReq(id);
+            return _serviceUser.Remove(req);
         }
     }
 }

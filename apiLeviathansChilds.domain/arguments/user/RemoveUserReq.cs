@@ -5,6 +5,11 @@ namespace apiLeviathansChilds.domain.arguments.user
 {
     public class RemoveUserReq : IRequest
     {
-        public Guid id { get; set; }
+        public Guid id { get; private set; }
+
+        public RemoveUserReq(Guid id)
+        {
+            this.id = id;
+        }
     }
 }

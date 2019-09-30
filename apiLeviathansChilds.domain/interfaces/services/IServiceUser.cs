@@ -10,14 +10,14 @@ namespace apiLeviathansChilds.domain.interfaces.services
     {
         AuthenticationRes Authentication(AuthenticationReq request);
 
-        IEnumerable<UserRes> GetUsers();
+        IEnumerable<UserRes> GetAll();
 
-        UserRes GetUser(GetUserReq request);
+        UserRes GetById(GetUserReq request);
 
-        CreateUserRes CreateUser(CreateUserReq request);
+        CreateUserRes Insert(CreateUserReq request);
 
-        UpdateUserRes UpdateUser(UpdateUserReq request);
+        UpdateUserRes Update(UpdateUserReq request);
 
-        BaseRes RemoveUser(RemoveUserReq request);
+        RemoveUserRes Remove(RemoveUserReq request);
     }
 }

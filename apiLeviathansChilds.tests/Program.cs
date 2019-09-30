@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using apiLeviathansChilds.domain.arguments.user;
 using apiLeviathansChilds.domain.entities;
 using apiLeviathansChilds.domain.services;
 using apiLeviathansChilds.domain.valueObjects;
 using apiLeviathansChilds.infra.persistence;
+using apiLeviathansChilds.infra.persistence.repositories;
+using Npgsql;
 
 namespace apiLeviathansChilds.tests
 {
@@ -12,30 +15,30 @@ namespace apiLeviathansChilds.tests
     {
         static void Main(string[] args)
         {
+            var connString = "Server=ec2-107-21-120-104.compute-1.amazonaws.com;Port=5432;Database=d1qpflu2ge096f;User Id=hlijyndmgrwthy; Password=6b908ab41772f28cd4b524e49393930babfa93cd7965572dec93d8accb87e835;SSL Mode=Require;Trust Server Certificate=true;";
+            RepositoryUser context = new RepositoryUser(connString);
 
-            using (var context = new Context())
-            {
-                context.Users.Add(new User(new RealName("teste", "teste"), "testando1", new Email("teste1@teste.com"), "123456"));
-                context.SaveChanges();
-                Console.WriteLine("inserido");
-            }
-            // Console.WriteLine("Tests starting...");
+            List<User> users;
+            users = context.GetAll();
+            users.ForEach(user => Console.WriteLine(user.name.firstName));
 
-            // var service = new ServiceUser();
-            // Console.WriteLine("Service instance created");
+            // UpdateUserReq req = new UpdateUserReq();
+            // req.id = Guid.Parse("1af0c01f-7e32-49b0-a487-93d4d7b040bd");
+            // req.firstName = "Marcos";
+            // req.lastName = "Machado";
 
-            // AuthenticationReq request = new AuthenticationReq();
-            // Console.WriteLine("Request created");
+            // User testUser = context.GetById(req.id);
+            // Console.WriteLine(testUser.id.ToString());
+            // testUser.Update(req);
 
-            // request.firstName = "teste";
-            // request.lastName = "testando";
-            // request.emailAdress = "teste@teste.com";
-            // request.password = "123456789";
-            // request.nick = "teste";
+            // Console.WriteLine(testUser.name.firstName);
+            // Console.WriteLine(testUser.id.ToString());
 
-            // var response = service.Authentication(request);
-
-            // service.Notifications.ToList().ForEach(x => Console.WriteLine(x.Message));
+            // if (testUser.IsValid())
+            // {
+            //     string user = context.Update(testUser).message;
+            //     Console.WriteLine(user);
+            // }
         }
     }
 }

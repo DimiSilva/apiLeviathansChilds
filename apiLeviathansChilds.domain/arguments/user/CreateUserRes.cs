@@ -16,6 +16,6 @@ namespace apiLeviathansChilds.domain.arguments.user
             this.message = message;
         }
 
-        public static explicit operator CreateUserRes(User user) => new CreateUserRes(user.id, Messages.X0_SUCCESSFULLY_CREATED("User"));
+        public static explicit operator CreateUserRes(Guid id) => new CreateUserRes(id, Messages.X0_SUCCESSFULLY_CREATED("User"));
     }
 }
