@@ -1,12 +1,7 @@
 using apiLeviathansChilds.domain.interfaces.repositories;
 using apiLeviathansChilds.domain.interfaces.services;
 using apiLeviathansChilds.domain.services;
-using apiLeviathansChilds.infra.persistence;
 using apiLeviathansChilds.infra.persistence.repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Authentication;
@@ -32,7 +27,15 @@ namespace apiLeviathansChilds.api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IServiceUser, ServiceUser>();
-            services.AddTransient<IRepositoryUser>(s => new RepositoryUser(Configuration.GetConnectionString("DBConnection")));
+            services.AddTransient<IServiceCharacter, ServiceCharacter>();
+            services.AddTransient<IServiceAmulet, ServiceAmulet>();
+            services.AddTransient<IServiceElement, ServiceElement>();
+            services.AddTransient<IServiceJob, ServiceJob>();
+            services.AddTransient<IRepositoryUser>(s => new RepositoryUser(Configuration.GetConnectionString("LocalDBConnection")));
+            services.AddTransient<IRepositoryCharacter>(s => new RepositoryCharacter(Configuration.GetConnectionString("LocalDBConnection")));
+            services.AddTransient<IRepositoryAmulet>(s => new RepositoryAmulet(Configuration.GetConnectionString("LocalDBConnection")));
+            services.AddTransient<IRepositoryElement>(s => new RepositoryElement(Configuration.GetConnectionString("LocalDBConnection")));
+            services.AddTransient<IRepositoryJob>(s => new RepositoryJob(Configuration.GetConnectionString("LocalDBConnection")));
             services.AddMvc();
         }
 
