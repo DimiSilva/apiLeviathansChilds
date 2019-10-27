@@ -6,5 +6,11 @@ namespace apiLeviathansChilds.domain.arguments.user
     {
         public string nick { get; set; }
         public string password { get; set; }
+
+        public AuthenticationReq(string nick, string password)
+        {
+            this.nick = nick;
+            this.password = password;
+        }
     }
 }

@@ -1,13 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using apiLeviathansChilds.domain.arguments.user;
 using apiLeviathansChilds.domain.entities;
-using apiLeviathansChilds.domain.services;
-using apiLeviathansChilds.domain.valueObjects;
-using apiLeviathansChilds.infra.persistence;
 using apiLeviathansChilds.infra.persistence.repositories;
-using Npgsql;
 
 namespace apiLeviathansChilds.tests
 {

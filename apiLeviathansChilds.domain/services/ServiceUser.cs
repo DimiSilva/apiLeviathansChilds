@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using apiLeviathansChilds.domain.arguments;
 using apiLeviathansChilds.domain.arguments.user;
 using apiLeviathansChilds.domain.entities;
 using apiLeviathansChilds.domain.interfaces.repositories;
@@ -39,9 +38,9 @@ namespace apiLeviathansChilds.domain.services
 
             if (this.IsInvalid())
             {
+                Console.WriteLine("invalido");
                 return null;
             }
-
             return (AuthenticationRes)user;
         }
 

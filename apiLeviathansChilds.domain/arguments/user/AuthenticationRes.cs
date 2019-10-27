@@ -6,19 +6,17 @@ namespace apiLeviathansChilds.domain.arguments.user
 {
     public class AuthenticationRes : IResponse
     {
-        Guid id;
-        string emailAdress;
-        string firstName;
-        string status;
+        public string id { get; private set; }
+        public string emailAdress { get; private set; }
+        public string firstName { get; private set; }
 
-        public AuthenticationRes(Guid id, string emailAdress, string firstName, string status)
+        public AuthenticationRes(string id, string emailAdress, string firstName)
         {
             this.id = id;
             this.emailAdress = emailAdress;
             this.firstName = firstName;
-            this.status = status;
         }
 
-        public static explicit operator AuthenticationRes(User user) => new AuthenticationRes(user.id, user.email.adress, user.name.firstName, user.status.ToString());
+        public static explicit operator AuthenticationRes(User user) => new AuthenticationRes(user.id.ToString(), user.email.adress, user.name.firstName);
     }
 }

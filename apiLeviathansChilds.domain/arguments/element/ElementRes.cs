@@ -1,9 +1,12 @@
 using System;
+using apiLeviathansChilds.domain.entities;
+using apiLeviathansChilds.domain.interfaces.arguments;
 
-namespace apiLeviathansChilds.domain.entities
+namespace apiLeviathansChilds.domain.arguments.element
 {
-    public class Element : EntityBase
+    public class ElementRes : IResponse
     {
+        public string id { get; private set; }
         public string name { get; private set; }
         public string description { get; private set; }
         public float hpMultiplier { get; private set; }
@@ -11,9 +14,9 @@ namespace apiLeviathansChilds.domain.entities
         public float agilityMultiplier { get; private set; }
         public float intelligenceMultiplier { get; private set; }
 
-        public Element(Guid id, string name, string description, float hpMultiplier, float strengthMultiplier, float agilityMultiplier, float intelligenceMultiplier)
+        public ElementRes(Guid id, string name, string description, float hpMultiplier, float strengthMultiplier, float agilityMultiplier, float intelligenceMultiplier)
         {
-            this.id = id;
+            this.id = id.ToString();
             this.name = name;
             this.description = description;
             this.hpMultiplier = hpMultiplier;
@@ -21,5 +24,7 @@ namespace apiLeviathansChilds.domain.entities
             this.agilityMultiplier = agilityMultiplier;
             this.intelligenceMultiplier = intelligenceMultiplier;
         }
+
+        public static explicit operator ElementRes(Element element) { return new ElementRes(element.id, element.name, element.description, element.hpMultiplier, element.strengthMultiplier, element.agilityMultiplier, element.intelligenceMultiplier); }
     }
 }
