@@ -37,7 +37,15 @@ namespace apiLeviathansChilds.api.Controllers
         [HttpPost("authentication")]
         public AuthenticationRes Post([FromBody] AuthenticationReq req)
         {
-            return _serviceUser.Authentication(req);
+            try
+            {
+                return _serviceUser.Authentication(req);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return null;
+            }
         }
 
         [HttpPut("{id}")]
