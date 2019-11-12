@@ -16,8 +16,11 @@ namespace apiLeviathansChilds.api
 {
     public class Startup
     {
+        private string connectedDb;
+
         public Startup(IConfiguration configuration)
         {
+            this.connectedDb = "DBConnection";
             Configuration = configuration;
         }
 
@@ -31,11 +34,13 @@ namespace apiLeviathansChilds.api
             services.AddTransient<IServiceAmulet, ServiceAmulet>();
             services.AddTransient<IServiceElement, ServiceElement>();
             services.AddTransient<IServiceJob, ServiceJob>();
-            services.AddTransient<IRepositoryUser>(s => new RepositoryUser(Configuration.GetConnectionString("LocalDBConnection")));
-            services.AddTransient<IRepositoryCharacter>(s => new RepositoryCharacter(Configuration.GetConnectionString("LocalDBConnection")));
-            services.AddTransient<IRepositoryAmulet>(s => new RepositoryAmulet(Configuration.GetConnectionString("LocalDBConnection")));
-            services.AddTransient<IRepositoryElement>(s => new RepositoryElement(Configuration.GetConnectionString("LocalDBConnection")));
-            services.AddTransient<IRepositoryJob>(s => new RepositoryJob(Configuration.GetConnectionString("LocalDBConnection")));
+            services.AddTransient<IServiceBlessing, ServiceBlessing>();
+            services.AddTransient<IRepositoryUser>(s => new RepositoryUser(Configuration.GetConnectionString(connectedDb)));
+            services.AddTransient<IRepositoryCharacter>(s => new RepositoryCharacter(Configuration.GetConnectionString(connectedDb)));
+            services.AddTransient<IRepositoryAmulet>(s => new RepositoryAmulet(Configuration.GetConnectionString(connectedDb)));
+            services.AddTransient<IRepositoryElement>(s => new RepositoryElement(Configuration.GetConnectionString(connectedDb)));
+            services.AddTransient<IRepositoryJob>(s => new RepositoryJob(Configuration.GetConnectionString(connectedDb)));
+            services.AddTransient<IRepositoryBlessing>(s => new RepositoryBlessing(Configuration.GetConnectionString(connectedDb)));
             services.AddMvc();
         }
 
