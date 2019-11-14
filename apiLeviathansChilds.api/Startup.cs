@@ -41,6 +41,17 @@ namespace apiLeviathansChilds.api
             services.AddTransient<IRepositoryElement>(s => new RepositoryElement(Configuration.GetConnectionString(connectedDb)));
             services.AddTransient<IRepositoryJob>(s => new RepositoryJob(Configuration.GetConnectionString(connectedDb)));
             services.AddTransient<IRepositoryBlessing>(s => new RepositoryBlessing(Configuration.GetConnectionString(connectedDb)));
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder
+                    .SetIsOriginAllowed((host) => true)
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
+
             services.AddMvc();
         }
 
@@ -51,6 +62,8 @@ namespace apiLeviathansChilds.api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors("CorsPolicy");
 
             app.UseMvc();
         }
