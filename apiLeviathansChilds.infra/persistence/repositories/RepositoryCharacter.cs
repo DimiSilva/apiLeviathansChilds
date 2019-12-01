@@ -119,7 +119,14 @@ namespace apiLeviathansChilds.infra.persistence.repositories
 
         public BaseRes Update(Character character)
         {
-            throw new NotImplementedException();
+            CultureInfo.CurrentCulture = new CultureInfo("en-US");
+            using (var conn = new NpgsqlConnection(_connectionString))
+            {
+                conn.Open();
+                using (var cmd = new NpgsqlCommand($"UPDATE \"characters\" SET amuletExperience='{character.amuletExperience}', amuletLevel='{character.amuletLevel}', hp='{character.hp}', strenght='{character.strength}', agility='{character.agility}', intelligence='{character.intelligence}', xp='{character.xp}', level='{character.level}', xpToUp='{character.xpToUp}', victorysNumber='{character.victorysNumber}', losesNumber='{character.losesNumber}', battlesNumber='{character.battlesNumber}', battleTimeInSeconds='{character.battleTimeInSeconds}' WHERE id='{character.id.ToString()}'", conn))
+                    cmd.ExecuteNonQuery();
+            }
+            return new BaseRes("Character updated");
         }
     }
 }

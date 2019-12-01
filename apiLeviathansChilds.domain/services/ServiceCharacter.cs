@@ -68,12 +68,44 @@ namespace apiLeviathansChilds.domain.services
 
         public RemoveCharacterRes Remove(RemoveCharacterReq request)
         {
-            throw new NotImplementedException();
+                        if (request == null)
+            {
+                AddNotification("RemoveCharacterReq", Messages.X0_IS_OBRIGATORY("Request"));
+                return null;
+            }
+            Character character = _repositoryCharacter.GetById(Guid.Parse(request.id));
+            if (character == null)
+            {
+                AddNotification("CharacterNotFound", Messages.X0_NOT_FOUND("Character"));
+                return null;
+            }
+
+            _repositoryCharacter.Remove(character.id);
+            return new RemoveCharacterRes();
         }
 
         public UpdateCharacterRes Update(UpdateCharacterReq request)
         {
-            throw new NotImplementedException();
+            if (request == null)
+            {
+                AddNotification("UpdateCharacterReq", Messages.X0_IS_OBRIGATORY("Request"));
+                return null;
+            }
+
+            Character character = _repositoryCharacter.GetById(Guid.Parse(request.id));
+
+            if (character == null)
+            {
+                AddNotification("user", Messages.X0_NOT_FOUND("User"));
+                return null;
+            }
+
+            character.Update(request);
+            AddNotifications(character);
+            if (IsInvalid())
+                return null;
+            _repositoryCharacter.Update(character);
+            return new UpdateCharacterRes();
         }
     }
 }

@@ -41,7 +41,6 @@ namespace apiLeviathansChilds.api.Controllers
             return _serviceCharacter.Insert(req);
         }
 
-
         [HttpPut("{id}")]
         public UpdateCharacterRes Update(Guid id, [FromBody] UpdateCharacterReq req)
         {

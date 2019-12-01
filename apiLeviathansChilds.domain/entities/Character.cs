@@ -1,4 +1,5 @@
 using System;
+using apiLeviathansChilds.domain.arguments.character;
 
 namespace apiLeviathansChilds.domain.entities
 {
@@ -66,6 +67,43 @@ namespace apiLeviathansChilds.domain.entities
             this.xp = 0;
             this.xpToUp = job.baseXpToUp;
             this.level = 1;
+        }
+
+        public void Update(UpdateCharacterReq updateRequest){
+            if(updateRequest.amuletExperience > amulet.baseXpToUp){
+                this.amuletExperience = updateRequest.amuletExperience % amulet.baseXpToUp;
+                for(int i = 0; i < Math.Abs((updateRequest.amuletExperience / amulet.baseXpToUp)); i++)
+                {
+                    this.amuletLevel += 1;
+                    this.hp *= amulet.hpMultiplier;
+                    this.strength *= amulet.strengthMultiplier;
+                    this.agility *= amulet.agilityMultiplier;
+                    this.intelligence *= amulet.intelligenceMultiplier;
+                }
+            }
+            else
+                this.amuletExperience = updateRequest.amuletExperience;
+            
+            if(updateRequest.xp > xpToUp){
+                this.xp = updateRequest.xp % xpToUp;
+                for(int i = 0; i < Math.Abs(updateRequest.xp / xpToUp); i++)
+                {
+                    this.level += 1;
+                    this.xpToUp += 10;
+                    this.hp *= (job.hpMultiplier * element.hpMultiplier);
+                    this.strength *= (job.strengthMultiplier * element.strengthMultiplier);
+                    this.agility *= (job.agilityMultiplier * element.agilityMultiplier);
+                    this.intelligence *= (job.intelligenceMultiplier * element.intelligenceMultiplier);
+                }
+            }
+            else
+                this.xp = updateRequest.xp;
+            
+            this.victorysNumber = updateRequest.victorysNumber;
+            this.losesNumber = updateRequest.losesNumber;
+            this.battlesNumber = updateRequest.battlesNumber;
+            this.battleTimeInSeconds = updateRequest.battleTimeInSeconds;
+            
         }
     }
 }
