@@ -70,7 +70,7 @@ namespace apiLeviathansChilds.domain.entities
         }
 
         public void Update(UpdateCharacterReq updateRequest){
-            if(updateRequest.amuletExperience > amulet.baseXpToUp){
+            if(updateRequest.amuletExperience >= amulet.baseXpToUp){
                 this.amuletExperience = updateRequest.amuletExperience % amulet.baseXpToUp;
                 for(int i = 0; i < Math.Abs((updateRequest.amuletExperience / amulet.baseXpToUp)); i++)
                 {
@@ -84,7 +84,7 @@ namespace apiLeviathansChilds.domain.entities
             else
                 this.amuletExperience = updateRequest.amuletExperience;
             
-            if(updateRequest.xp > xpToUp){
+            if(updateRequest.xp >= xpToUp){
                 this.xp = updateRequest.xp % xpToUp;
                 for(int i = 0; i < Math.Abs(updateRequest.xp / xpToUp); i++)
                 {
@@ -103,7 +103,6 @@ namespace apiLeviathansChilds.domain.entities
             this.losesNumber = updateRequest.losesNumber;
             this.battlesNumber = updateRequest.battlesNumber;
             this.battleTimeInSeconds = updateRequest.battleTimeInSeconds;
-            
         }
     }
 }
